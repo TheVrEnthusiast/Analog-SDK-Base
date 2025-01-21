@@ -15,12 +15,11 @@ public class LevelCrateEditorWindow : EditorWindow
     private string levelCrateDescription = "Description of the level crate.";
     private List<string> levelCrateTags = new List<string>();
     private string newTag = "";
-    private string levelSceneName = ""; // The scene name for the level crate
+    private string levelSceneName = ""; 
 
     private Vector2 scrollPosition;
-    private bool isCreatingLevelCrate = false; // Flag to show level crate creation menu
+    private bool isCreatingLevelCrate = false; 
 
-    // Open the window
     [MenuItem("ANALOG SDK/Editor/LevelCrates")]
     public static void OpenWindow()
     {
@@ -54,12 +53,11 @@ public class LevelCrateEditorWindow : EditorWindow
 
             if (GUILayout.Button("Create Level Crate"))
             {
-                isCreatingLevelCrate = true; // Show level crate creation UI
+                isCreatingLevelCrate = true;
             }
 
             if (isCreatingLevelCrate)
             {
-                // Show level crate creation menu
                 CreateLevelCrateUI();
             }
         }
@@ -76,34 +74,28 @@ public class LevelCrateEditorWindow : EditorWindow
 
     private void CreatePallet()
     {
-        // Create the "SDK/pallets" folder if it doesn't exist
         string path = "Assets/SDK/pallets";
         if (!System.IO.Directory.Exists(path))
         {
             System.IO.Directory.CreateDirectory(path);
         }
 
-        // Create the pallet barcode in the format: palletname.authorsname.version
         palletBarcode = $"{palletTitle}.{palletAuthor}.{palletVersion}";
 
-        // Create a new pallet
         Pallet newPallet = ScriptableObject.CreateInstance<Pallet>();
         newPallet.Title = palletTitle;
         newPallet.Barcode = palletBarcode;
         newPallet.Author = palletAuthor;
         newPallet.Version = palletVersion;
 
-        // Save the pallet to disk
         AssetDatabase.CreateAsset(newPallet, path + "/" + palletTitle + ".asset");
         AssetDatabase.SaveAssets();
 
-        // Select the newly created pallet
         selectedPallet = newPallet;
     }
 
     private void SelectPallet()
     {
-        // Get the selected pallet from the assets
         string path = "Assets/SDK/pallets";
         string[] palletGuids = AssetDatabase.FindAssets("t:Pallet", new[] { path });
 
@@ -133,7 +125,6 @@ public class LevelCrateEditorWindow : EditorWindow
         levelCrateBarcode = EditorGUILayout.TextField("Level Crate Barcode", levelCrateBarcode);
         levelCrateDescription = EditorGUILayout.TextField("Level Crate Description", levelCrateDescription);
 
-        // Tags editor
         EditorGUILayout.LabelField("Tags");
         for (int i = 0; i < levelCrateTags.Count; i++)
         {
@@ -142,7 +133,7 @@ public class LevelCrateEditorWindow : EditorWindow
             if (GUILayout.Button("Remove", GUILayout.Width(60)))
             {
                 levelCrateTags.RemoveAt(i);
-                return; // Exit to avoid modifying list while iterating
+                return; 
             }
             EditorGUILayout.EndHorizontal();
         }
@@ -153,11 +144,10 @@ public class LevelCrateEditorWindow : EditorWindow
             if (!string.IsNullOrEmpty(newTag))
             {
                 levelCrateTags.Add(newTag);
-                newTag = ""; // Reset input field after adding
+                newTag = "";
             }
         }
 
-        // Scene selection
         levelSceneName = EditorGUILayout.TextField("Level Scene Name", levelSceneName);
 
         if (GUILayout.Button("Save Level Crate"))
@@ -167,7 +157,7 @@ public class LevelCrateEditorWindow : EditorWindow
 
         if (GUILayout.Button("Cancel"))
         {
-            isCreatingLevelCrate = false; // Close the level crate creation UI
+            isCreatingLevelCrate = false; 
         }
     }
 
@@ -179,10 +169,8 @@ public class LevelCrateEditorWindow : EditorWindow
             return;
         }
 
-        // Create the level crate barcode in the format: levelcratename.authorsname.version
-        levelCrateBarcode = $"{levelCrateTitle}.{palletAuthor}.{selectedPallet.Version}"; // Using pallet's author and version
+        levelCrateBarcode = $"{levelCrateTitle}.{palletAuthor}.{selectedPallet.Version}"; 
 
-        // Create and save the new level crate
         LevelCrate newLevelCrate = ScriptableObject.CreateInstance<LevelCrate>();
         newLevelCrate.Title = levelCrateTitle;
         newLevelCrate.Barcode = levelCrateBarcode;
@@ -190,7 +178,6 @@ public class LevelCrateEditorWindow : EditorWindow
         newLevelCrate.Tags = levelCrateTags.ToArray();
         newLevelCrate.LevelSceneName = levelSceneName;
 
-        // Save the new level crate asset
         string levelCratePath = "Assets/SDK/pallets/" + selectedPallet.Title + "_LevelCrates";
         if (!System.IO.Directory.Exists(levelCratePath))
         {
@@ -200,7 +187,6 @@ public class LevelCrateEditorWindow : EditorWindow
         AssetDatabase.CreateAsset(newLevelCrate, levelCratePath + "/" + newLevelCrate.Title + ".asset");
         AssetDatabase.SaveAssets();
 
-        // Add level crate to the selected pallet's LevelCrates array
         if (selectedPallet.LevelCrates == null)
         {
             selectedPallet.LevelCrates = new LevelCrate[] { newLevelCrate };
@@ -211,11 +197,9 @@ public class LevelCrateEditorWindow : EditorWindow
             selectedPallet.LevelCrates = levelCrateList.ToArray();
         }
 
-        // Save the updated pallet
         EditorUtility.SetDirty(selectedPallet);
         AssetDatabase.SaveAssets();
 
-        // Reset level crate creation UI and inform the user
         isCreatingLevelCrate = false;
         EditorUtility.DisplayDialog("Level Crate Created", $"Level Crate {newLevelCrate.Title} has been created for pallet {selectedPallet.Title}.", "OK");
     }

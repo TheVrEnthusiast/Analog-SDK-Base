@@ -1,7 +1,11 @@
-# Analog-SDK-Base
-For Creation of your own sdk, its the base needs for a sdk.
+Analog SDK 1.1.1
 
+Has Crates and pallets.
+Spawnable crates and level crates.
+Has Zones Created by CoolKidStan. Uses Alt Events.
+Has editors for easy creation.
 
-
-MUST HAVE ALT Events for the zones. Zones where made by CoolKidStan. Same as crates and pallets.
-TheVrEnthusiast made all the editors and crate spawner,And the Prefab Spawner.
+PLANNED UPDATES.
+Finish Asset Warehouse.
+make the crates and pallets editor easyer and simpler to use.
+Release more features to the SDK base.

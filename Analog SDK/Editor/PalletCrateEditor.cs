@@ -125,7 +125,6 @@ public class PalletCrateEditorWindow : EditorWindow
         crateBarcode = EditorGUILayout.TextField("Crate Barcode", crateBarcode);
         crateDescription = EditorGUILayout.TextField("Crate Description", crateDescription);
 
-        // Tags editor
         EditorGUILayout.LabelField("Tags");
         for (int i = 0; i < crateTags.Count; i++)
         {
@@ -149,7 +148,6 @@ public class PalletCrateEditorWindow : EditorWindow
             }
         }
 
-        // Select a prefab for the crate
         CrateSpawnable = (GameObject)EditorGUILayout.ObjectField("Select Crate Prefab", CrateSpawnable, typeof(GameObject), false);
 
         if (GUILayout.Button("Save Crate"))
@@ -159,7 +157,7 @@ public class PalletCrateEditorWindow : EditorWindow
 
         if (GUILayout.Button("Cancel"))
         {
-            isCreatingCrate = false; // Close the crate creation UI
+            isCreatingCrate = false; 
         }
     }
 
@@ -172,9 +170,8 @@ public class PalletCrateEditorWindow : EditorWindow
         }
 
 
-        crateBarcode = $"{crateTitle}.{palletAuthor}.{selectedPallet.Version}"; // Using pallet's author and version
+        crateBarcode = $"{crateTitle}.{palletAuthor}.{selectedPallet.Version}";
 
-        // Create and save the new crate
         Crate newCrate = ScriptableObject.CreateInstance<Crate>();
         newCrate.Title = crateTitle;
         newCrate.Barcode = crateBarcode;
@@ -182,9 +179,8 @@ public class PalletCrateEditorWindow : EditorWindow
         newCrate.Tags = crateTags.ToArray();
 
 
-        newCrate.CrateSpawnable = CrateSpawnable; // Store the selected prefab
+        newCrate.CrateSpawnable = CrateSpawnable;
 
-        // Save the new crate asset
         string cratePath = "Assets/SDK/pallets/" + selectedPallet.Title + "_Crates";
         if (!System.IO.Directory.Exists(cratePath))
         {
@@ -205,7 +201,6 @@ public class PalletCrateEditorWindow : EditorWindow
             selectedPallet.Crates = crateList.ToArray();
         }
 
-        // Save the updated pallet
         EditorUtility.SetDirty(selectedPallet);
         AssetDatabase.SaveAssets();
 

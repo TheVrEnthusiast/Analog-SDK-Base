@@ -9,8 +9,7 @@ public class Crate : ScriptableObject
     public string Description;
     public bool Redacted = false;
     public string[] Tags;
-    public Texture2D CrateLogo;
 
-    public GameObject CrateSpawnable;  // Reference to the prefab of the crate
+    public GameObject CrateSpawnable;
   
 }
