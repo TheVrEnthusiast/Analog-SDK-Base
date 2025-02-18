@@ -1,4 +1,10 @@
 Analog Sdk.
+Useing CoolKidStans Zoneing system.
+
+Developers:
+TheVrEnthusiast-Fulltime
+CoolKidstan-Helped At the start.
+
 
 Creation menu
 ![image](https://github.com/user-attachments/assets/f15b5451-a9da-466b-9a26-5bc46c6fdc6a)
