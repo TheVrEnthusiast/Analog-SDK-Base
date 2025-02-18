@@ -16,11 +16,6 @@ public class CrateSpawner : MonoBehaviour
 
     void Update()
     {
-        if (selectedCrate != null && selectedCrate.combinedMesh != null)
-        {
-            VisualizeCombinedMesh();
-        }
-
         SearchCrateByBarcode();
 
         if (autoSpawn && selectedCrate != null && spawnedCrate == null)
@@ -47,7 +42,10 @@ public class CrateSpawner : MonoBehaviour
         {
             Debug.LogWarning("No crate selected or crate prefab is missing.");
         }
+
+        Destroy(gameObject);
     }
+
 
     public void SearchCrateByBarcode()
     {
@@ -77,15 +75,6 @@ public class CrateSpawner : MonoBehaviour
 
             meshFilter = combinedMeshObject.AddComponent<MeshFilter>();
             meshRenderer = combinedMeshObject.AddComponent<MeshRenderer>();
-
-            if (selectedCrate.analogMaterial != null)
-            {
-                meshRenderer.material = selectedCrate.analogMaterial;
-            }
-            else
-            {
-                Debug.LogWarning("ANALOG material not found in the crate.");
-            }
         }
 
         meshFilter.mesh = selectedCrate.combinedMesh;
@@ -96,15 +85,14 @@ public class CrateSpawner : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Gizmos.DrawSphere(transform.position, 0.1f);
-
         if (selectedCrate != null && selectedCrate.combinedMesh != null)
         {
-            Gizmos.color = Color.white;
+            Gizmos.color = selectedCrate.gizmoColor;
+
             Gizmos.DrawMesh(selectedCrate.combinedMesh, transform.position, transform.rotation);
 
-            Bounds meshBounds = selectedCrate.combinedMesh.bounds;
             Gizmos.color = Color.white;
+            Bounds meshBounds = selectedCrate.combinedMesh.bounds;
             Gizmos.DrawWireCube(transform.position + meshBounds.center, meshBounds.size);
         }
 
