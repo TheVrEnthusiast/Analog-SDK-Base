@@ -41,5 +41,8 @@ This can be used for the direct spawn of a prefab instead of creating a crate.
 has a scale on spawn.
 ------------------------------------------------------------------------------------------
 
+crates Can have custom Colors for there Crate Preview.
+![image](https://github.com/user-attachments/assets/f7c01133-676d-4cb0-9960-d9de5262eec1)
+![image](https://github.com/user-attachments/assets/cbc0e90a-486d-4a46-89ef-1a8128be7a74)
 
 
