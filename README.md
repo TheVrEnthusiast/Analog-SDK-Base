@@ -3,7 +3,7 @@ Useing CoolKidStans Zoneing system.
 
 Developers:
 TheVrEnthusiast-Fulltime
-CoolKidstan-Helped At the start.
+CoolKidstan-Helped Build the Base.
 
 
 Creation menu
