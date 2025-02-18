@@ -22,7 +22,7 @@ public class CustomSDKEditor : Editor
         GameObject sceneZone = new GameObject("Scene Zone");
 
         BoxCollider boxCollider = sceneZone.AddComponent<BoxCollider>();
-        boxCollider.isTrigger = true; 
+        boxCollider.isTrigger = true;
 
         sceneZone.AddComponent<SceneZone>();
         sceneZone.AddComponent<ZoneLinks>();
@@ -38,7 +38,7 @@ public class CustomSDKEditor : Editor
         GameObject sceneZonechunk = new GameObject("Scene Chunk");
 
         BoxCollider boxCollider = sceneZonechunk.AddComponent<BoxCollider>();
-        boxCollider.isTrigger = true; 
+        boxCollider.isTrigger = true;
 
         sceneZonechunk.AddComponent<SceneZone>();
         sceneZonechunk.AddComponent<ZoneLinks>();

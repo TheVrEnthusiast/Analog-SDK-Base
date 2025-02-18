@@ -2,12 +2,32 @@ using UnityEngine;
 
 public class CrateSpawner : MonoBehaviour
 {
-    public Crate selectedCrate; 
-    public string barcodeInput; 
-    private GameObject spawnedCrate; 
+    public Crate selectedCrate;
+    public string barcodeInput;
+    private GameObject spawnedCrate;
     public bool autoSpawn = true;
 
     private bool gizmoLogged = false;
+
+    private MeshFilter meshFilter;
+    private MeshRenderer meshRenderer;
+
+    private GameObject combinedMeshObject;
+
+    void Update()
+    {
+        if (selectedCrate != null && selectedCrate.combinedMesh != null)
+        {
+            VisualizeCombinedMesh();
+        }
+
+        SearchCrateByBarcode();
+
+        if (autoSpawn && selectedCrate != null && spawnedCrate == null)
+        {
+            SpawnCrate();
+        }
+    }
 
     public void SpawnCrate()
     {
@@ -48,13 +68,50 @@ public class CrateSpawner : MonoBehaviour
         }
     }
 
-    void Update()
+    private void VisualizeCombinedMesh()
     {
-        SearchCrateByBarcode();
-
-        if (autoSpawn && selectedCrate != null && spawnedCrate == null)
+        if (combinedMeshObject == null)
         {
-            SpawnCrate();
+            combinedMeshObject = new GameObject("CombinedMeshObject");
+            combinedMeshObject.transform.SetParent(transform);
+
+            meshFilter = combinedMeshObject.AddComponent<MeshFilter>();
+            meshRenderer = combinedMeshObject.AddComponent<MeshRenderer>();
+
+            if (selectedCrate.analogMaterial != null)
+            {
+                meshRenderer.material = selectedCrate.analogMaterial;
+            }
+            else
+            {
+                Debug.LogWarning("ANALOG material not found in the crate.");
+            }
+        }
+
+        meshFilter.mesh = selectedCrate.combinedMesh;
+
+        combinedMeshObject.transform.position = transform.position;
+        combinedMeshObject.transform.rotation = transform.rotation;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawSphere(transform.position, 0.1f);
+
+        if (selectedCrate != null && selectedCrate.combinedMesh != null)
+        {
+            Gizmos.color = Color.white;
+            Gizmos.DrawMesh(selectedCrate.combinedMesh, transform.position, transform.rotation);
+
+            Bounds meshBounds = selectedCrate.combinedMesh.bounds;
+            Gizmos.color = Color.white;
+            Gizmos.DrawWireCube(transform.position + meshBounds.center, meshBounds.size);
+        }
+
+        if (!gizmoLogged)
+        {
+            Debug.Log("Gizmo: Showing center of CrateSpawner.");
+            gizmoLogged = true;
         }
     }
 
@@ -63,18 +120,6 @@ public class CrateSpawner : MonoBehaviour
         if (!Application.isPlaying)
         {
             SearchCrateByBarcode();
-        }
-    }
-
-    private void OnDrawGizmos()
-    {
-        Gizmos.color = Color.red;
-        Gizmos.DrawSphere(transform.position, 0.1f);
-
-        if (!gizmoLogged)
-        {
-            Debug.Log("Gizmo: Showing center of CrateSpawner.");
-            gizmoLogged = true; 
         }
     }
 }
